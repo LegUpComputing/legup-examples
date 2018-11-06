@@ -384,7 +384,7 @@ int main() {
 
     char ch1, ch2;
     int error = 0, pos = 0, line_num = 1;
-    while ((ch1 = getc(tx_output)) != EOF && (ch2 = getc(tx_expected)) != EOF) {
+    while ((ch1 = fgetc(tx_output)) != EOF && (ch2 = fgetc(tx_expected)) != EOF) {
         pos++;
         if (ch1 == '\n' && ch2 == '\n') {
             line_num++;
