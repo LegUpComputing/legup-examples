@@ -1,8 +1,8 @@
-#include "legup/streaming.h"
+#include "legup/streaming.hpp"
 #include "input.h"
 #include "output.h"
-#include <assert.h>
 #include <stdio.h>
+using namespace legup;
 
 #define WIDTH 512
 #define HEIGHT 512
@@ -45,13 +45,14 @@ void sf_window_3x3_and_line_buffer(unsigned char input_pixel,
     prev_row_index = (prev_row_index == WIDTH - 1) ? 0 : prev_row_index + 1;
 }
 
-void sobel_filter(FIFO *input_fifo, FIFO *output_fifo) {
+void sobel_filter(FIFO<unsigned char> &input_fifo,
+                  FIFO<unsigned char> &output_fifo) {
 
-    unsigned char input_pixel = fifo_read(input_fifo);
+    unsigned char input_pixel = input_fifo.read();
 
     static int i = 0;
     static int j = 0;
-    static unsigned char window[3][3] = {{0}};
+    static unsigned char window[3][3] = {0};
     static unsigned count = 0;
 
     unsigned char ret = 0;
@@ -91,7 +92,7 @@ void sobel_filter(FIFO *input_fifo, FIFO *output_fifo) {
             ret = sum;
         }
 
-        fifo_write(output_fifo, ret);
+        output_fifo.write(ret);
 
         // keep track of row/column of image
         if (j < WIDTH - 1) {
@@ -111,47 +112,47 @@ void sobel_filter(FIFO *input_fifo, FIFO *output_fifo) {
 int main() {
     int i, j;
 
-    FIFO *input_fifo = fifo_malloc(/*width=*/8, /*depth=*/WIDTH * HEIGHT * 2);
-    FIFO *output_fifo = fifo_malloc(/*width=*/8, /*depth=*/WIDTH * HEIGHT * 2);
+    FIFO<unsigned char> input_fifo(/*depth=*/WIDTH * HEIGHT * 2);
+    FIFO<unsigned char> output_fifo(/*depth=*/WIDTH * HEIGHT * 2);
 
     unsigned int matching = 0;
 
     // write input pixels
-    for (i = 0; i < HEIGHT; i++)
-      for (j = 0; j < WIDTH; j++) {
-        fifo_write(input_fifo, elaine_512_input[i][j]);
-      }
+    for (i = 0; i < HEIGHT; i++) {
+        for (j = 0; j < WIDTH; j++) {
+            input_fifo.write(elaine_512_input[i][j]);
+        }
+    }
 
     // pre-fill the hardware line buffers
     for (i = 0; i < WIDTH + 2; i++) {
-      fifo_write(input_fifo, 0);
-      sobel_filter(input_fifo, output_fifo);
+        input_fifo.write(0);
+        sobel_filter(input_fifo, output_fifo);
     }
 
     // run hardware model
     for (i = 0; i < HEIGHT; i++) {
-      for (j = 0; j < WIDTH; j++) {
-        sobel_filter(input_fifo, output_fifo);
-      }
+        for (j = 0; j < WIDTH; j++) {
+            sobel_filter(input_fifo, output_fifo);
+        }
     }
 
     // output validation
     for (i = 0; i < HEIGHT; i++) {
-      for (j = 0; j < WIDTH; j++) {
-        unsigned char golden = golden_output[i][j];
+        for (j = 0; j < WIDTH; j++) {
+            unsigned char golden = golden_output[i][j];
 
-        unsigned char hw;
-        assert(!fifo_empty(output_fifo));
-        hw = fifo_read(output_fifo);
+            unsigned char hw;
+            hw = output_fifo.read();
 
-        if (golden != hw) {
-          printf("ERROR: ");
-        } else {
-          printf("MATCH: ");
-          matching++;
+            if (golden != hw) {
+                printf("ERROR: ");
+            } else {
+                printf("MATCH: ");
+                matching++;
+            }
+            printf("i = %d j = %d sw = %d hw = %d\n", i, j, golden, hw);
         }
-        printf("i = %d j = %d sw = %d hw = %d\n", i, j, golden, hw);
-      }
     }
 
     printf("Result: %d\n", matching);
@@ -160,9 +161,6 @@ int main() {
     } else {
         printf("RESULT: FAIL\n");
     }
-
-    fifo_free(input_fifo);
-    fifo_free(output_fifo);
 
     return (matching != WIDTH * HEIGHT);
 }
