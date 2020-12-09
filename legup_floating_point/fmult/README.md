@@ -23,14 +23,9 @@ or command-line.
 # Using LegUp HLS IDE
 1. Launch LegUp IDE.
 2. Create a new LegUp project.
-    1. Add the following source files from this directory:
-                ap_fp.hpp, fmult.hpp, fmult_test.cpp, half.hpp
-    2. Set "Top-Level Function" to "custom_top".
-    3. Select "Microsemi", "PolarFire", and "MPF300TS-1FCG1152I on MPF300 board".
-3. Add "Pipeline function" constraints using the constraint icon or by pressing (ctrl+shift+}) for the following functions:
-    1. "fmult_16_wrapper"
-    2. "fmult_32_wrapper"
-    3. "fmult_64_wrapper".
+        a. Add the following source files from this directory:
+                 ap_fp.hpp, fmult.hpp, fmult_test.cpp, half.hpp
+        b. Select "Microsemi", "PolarFire", and "MPF300TS-1FCG1152I on MPF300 board".
 3. Add "Set target clock period" constraint using the constraint icon or by pressing (ctrl+shift+}) with Constraint Value 20.
 4. Try "Run Software", "Compile to Hardware", and "SW/HW Co-simulation".
 

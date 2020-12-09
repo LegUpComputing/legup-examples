@@ -168,6 +168,7 @@ void custom_top(legup::FIFO<ap_uint<16>> &half_ina,
                 legup::FIFO<uint64> &double_out, legup::FIFO<uint32> &float_ina,
                 legup::FIFO<uint32> &float_inb,
                 legup::FIFO<uint32> &float_out) {
+#pragma LEGUP function top
     fmult_16_wrapper<17, 17>(half_ina, half_inb, half_out);
     fmult_32_wrapper<17, 17>(float_ina, float_inb, float_out);
     fmult_64_wrapper<17, 17>(double_ina, double_inb, double_out);

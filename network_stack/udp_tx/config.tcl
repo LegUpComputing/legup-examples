@@ -1,9 +1,3 @@
 source $::env(LEGUP_ROOT_DIR)/examples/legup.tcl
 
-set_project VirtexU9P AWS_F1 hw_only
-
-function_pipeline udpTxReadFunction
-function_pipeline udpTxWriteFunction
-function_pipeline udpTxChecksum
-
-set_custom_top_level_module udpTx
+set_project PolarFire MPF300 hw_only

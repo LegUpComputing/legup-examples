@@ -10,13 +10,8 @@ After the installation is done, you can try out this example through either GUI 
         a. Add the following source files:
                 i. axi_word.hpp, checksum_calc.h and utils.h from the parent directory,
                 ii. udp_tx.cpp, in.dat, expected_out.dat from this directory.
-        b. Set "Top-Level Function" to "udpTx".
-        c. Select "Xilinx", "Virtex U9P", and "xcvu9p-flgb2104-2-i on AWS_F1 board".
-3. Add "Pipeline function" constraints using the constraint icon or by pressing (ctrl+shift+}) for the following functions:
-        a. "udpTxReadFunction"
-        b. "udpTxWriteFunction"
-        c. "udpTxChecksum".
-4. Try "Run Software", "Compile to Hardware", and "SW/HW Co-simulation".
+        b. Select "Microsemi", "PolarFire", and "MPF300TS-1FCG1152I on MPF300 board".
+3. Try "Run Software", "Compile to Hardware", and "SW/HW Co-simulation".
 
 # Using LegUp HLS Commandline
 1. Make sure environment variable "LEGUP_ROOT_DIR" is properly set. 

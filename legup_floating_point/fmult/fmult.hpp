@@ -275,6 +275,7 @@ template <unsigned MULT_W_A, unsigned MULT_W_B>
 void fmult_64_wrapper(FIFO<uint64> &input_a_fifo,
                       FIFO<uint64> &input_b_fifo,
                       FIFO<uint64> &output_fifo) {
+#pragma LEGUP function pipeline
     ap_fp<D_M_W, D_E_W> in_a =
         ap_fp<D_M_W, D_E_W>(ap_uint<64>(input_a_fifo.read()));
     ap_fp<D_M_W, D_E_W> in_b =
@@ -287,6 +288,7 @@ template <unsigned MULT_W_A, unsigned MULT_W_B>
 void fmult_32_wrapper(FIFO<uint32> &input_a_fifo,
                       FIFO<uint32> &input_b_fifo,
                       FIFO<uint32> &output_fifo) {
+#pragma LEGUP function pipeline
     ap_fp<F_M_W, F_E_W> in_a =
         ap_fp<F_M_W, F_E_W>(ap_uint<32>(input_a_fifo.read()));
     ap_fp<F_M_W, F_E_W> in_b =
@@ -299,6 +301,7 @@ template <unsigned MULT_W_A, unsigned MULT_W_B>
 void fmult_16_wrapper(FIFO<ap_uint<16>> &input_a_fifo,
                       FIFO<ap_uint<16>> &input_b_fifo,
                       FIFO<ap_uint<16>> &output_fifo) {
+#pragma LEGUP function pipeline
     ap_fp<H_M_W, H_E_W> in_a = ap_fp<H_M_W, H_E_W>(input_a_fifo.read());
     ap_fp<H_M_W, H_E_W> in_b = ap_fp<H_M_W, H_E_W>(input_b_fifo.read());
     ap_fp<H_M_W, H_E_W> out = fmult<MULT_W_A, MULT_W_B>(in_a, in_b);

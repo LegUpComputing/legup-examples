@@ -20,6 +20,7 @@ void udpTxReadFunction(legup::FIFO<AxiWord> &data_in,
                        legup::FIFO<uint16> &length_in,
                        legup::FIFO<AxiWord> &data_out,
                        legup::FIFO<AxiWord> &checksum_out) {
+#pragma LEGUP function pipeline
 
     // From http://www.faqs.org/rfcs/rfc768.html
     //
@@ -170,6 +171,7 @@ void udpTxReadFunction(legup::FIFO<AxiWord> &data_in,
 void udpTxWriteFunction(legup::FIFO<AxiWord> &data_in,
                         legup::FIFO<uint16> &checksum_in,
                         legup::FIFO<AxiWord> &data_out) {
+#pragma LEGUP function pipeline
 
     // IP Header
     //
@@ -261,11 +263,13 @@ void udpTxWriteFunction(legup::FIFO<AxiWord> &data_in,
 // integrate multiple projects together
 void udpTxChecksum(legup::FIFO<AxiWord> &data_in,
                    legup::FIFO<uint16> &checksum_out) {
+#pragma LEGUP function pipeline
     checksumCalculation(data_in, checksum_out);
 }
 
 void udpTx(legup::FIFO<AxiWord> &data_in, legup::FIFO<metadata> &metadata_in,
            legup::FIFO<uint16> &length_in, legup::FIFO<AxiWord> &data_out) {
+#pragma LEGUP function top
 
     // Declare intermediate legup::FIFOs for inter-function communication
     // Note that the FIFO size should be big enough to hold the whole packet
@@ -295,7 +299,7 @@ int main() {
 
     FILE *tx_input = fopen("in.dat", "r");
     FILE *tx_output = fopen("out.dat", "w");
-    if(!tx_input || !tx_output) {
+    if (!tx_input || !tx_output) {
         printf("FAIL: Unable to open data file.\n");
         return -1;
     }
@@ -366,7 +370,7 @@ int main() {
             }
             additional_iter = 0;
         }
-        additional_iter++; 
+        additional_iter++;
         udpTx(data_in, metadata_in, length_in, data_out);
     }
 
@@ -377,14 +381,15 @@ int main() {
     FILE *tx_expected = fopen("expected_out.dat", "r");
     tx_output = fopen("out.dat", "r");
 
-    if(!tx_expected || !tx_output) {
+    if (!tx_expected || !tx_output) {
         printf("FAIL: Unable to open data file.\n");
         return -1;
     }
 
     char ch1, ch2;
     int error = 0, pos = 0, line_num = 1;
-    while ((ch1 = fgetc(tx_output)) != EOF && (ch2 = fgetc(tx_expected)) != EOF) {
+    while ((ch1 = fgetc(tx_output)) != EOF &&
+           (ch2 = fgetc(tx_expected)) != EOF) {
         pos++;
         if (ch1 == '\n' && ch2 == '\n') {
             line_num++;
