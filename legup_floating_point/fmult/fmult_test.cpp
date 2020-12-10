@@ -53,14 +53,14 @@ HalfBits ParseBits(half in) {
 
 template <typename FType> void print_value_and_bits(StrT var_name, FType in) {
   auto B = ParseBits(in);
-  printf("%s: %f,\tExponent: 0x%s\tMatissa: 0x%s\n", var_name, in,
-         B.E.to_string().c_str(), B.M.to_string().c_str());
+  printf("%s: %f,\tExponent: %lld\tMatissa: %lld\n", var_name, in,
+         B.E.to_uint64(), B.M.to_uint64());
 }
 
 template <> void print_value_and_bits<half>(StrT var_name, half in) {
   auto B = ParseBits(in);
-  printf("%s: %f,\tExponent: 0x%s\tMatissa: 0x%s\n", var_name, float(in),
-         B.E.to_string().c_str(), B.M.to_string().c_str());
+  printf("%s: %f,\tExponent: %lld\tMatissa: %lld\n", var_name, float(in),
+         B.E.to_uint64(), B.M.to_uint64());
 }
 
 // Compares output.
