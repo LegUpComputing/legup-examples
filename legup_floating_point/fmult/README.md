@@ -23,10 +23,13 @@ or command-line.
 # Using LegUp HLS IDE
 1. Launch LegUp IDE.
 2. Create a new LegUp project.
-        a. Add the following source files from this directory:
-                 ap_fp.hpp, fmult.hpp, fmult_test.cpp, half.hpp
-        b. Select "Microsemi", "PolarFire", and "MPF300TS-1FCG1152I on MPF300 board".
-3. Add "Set target clock period" constraint using the constraint icon or by pressing (ctrl+shift+}) with Constraint Value 20.
+   * Set a project name, e.g., "fmult".
+   * Add all `.hpp`, `.cpp` source files from this directory.
+   * Skip "Top-Level Function" since a top-level pragma is already specified for the `custom_top` function in `fmul_test.cpp`.
+   * Skip "Test Bench Module" as we will use SW/HW Co-simulation.
+   * Select "PolarFire" and "MPF300TS-1FCG1152I on MPF300 board" for the target FPGA device.
+   * Then "Finish".
+3. Click "HLS Constraints" button, then select "Set target clock period" constraint type, set constraint value 20 (in nanoseconds), click "Add" and "OK".
 4. Try "Run Software", "Compile to Hardware", and "SW/HW Co-simulation".
 
 # Using LegUp HLS Command-line
