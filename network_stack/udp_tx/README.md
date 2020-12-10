@@ -7,10 +7,14 @@ After the installation is done, you can try out this example through either GUI 
 # Using LegUp HLS IDE
 1. Launch LegUp IDE.
 2. Create a new LegUp project.
-        a. Add the following source files:
-                i. axi_word.hpp, checksum_calc.h and utils.h from the parent directory,
-                ii. udp_tx.cpp, in.dat, expected_out.dat from this directory.
-        b. Select "Microsemi", "PolarFire", and "MPF300TS-1FCG1152I on MPF300 board".
+   * Set a project name, e.g., "udp_tx".
+   * Add the following source files:
+     * `axi_word.hpp`, `checksum_calc.h` and `utils.h` from the above `network_stack` directory.
+     * `udp_tx.cpp`, `in.dat`, `expected_out.dat` from this directory (select "All Files" in "Files of Types" to see `.dat` files).
+   * Skip "Top-Level Function" since a top-level pragma is already specified for the `udpTx` function in `udp_tx.cpp`.
+   * Skip "Test Bench Module" as we will use SW/HW Co-simulation.
+   * Select "PolarFire" and "MPF300TS-1FCG1152I on MPF300 board" for the target FPGA device.
+   * Then "Finish".
 3. Try "Run Software", "Compile to Hardware", and "SW/HW Co-simulation".
 
 # Using LegUp HLS Commandline
