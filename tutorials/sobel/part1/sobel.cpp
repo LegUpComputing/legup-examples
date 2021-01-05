@@ -6,8 +6,8 @@
 #define HEIGHT 512
 #define WIDTH 512
 
-void sobel_filter(unsigned char input[HEIGHT][WIDTH],
-                  unsigned char output[HEIGHT][WIDTH]) {
+void sobel_filter(unsigned char in[HEIGHT][WIDTH],
+                  unsigned char out[HEIGHT][WIDTH]) {
 #pragma LEGUP function top
 
     // The 3x3 Sobel filters.
@@ -18,7 +18,7 @@ void sobel_filter(unsigned char input[HEIGHT][WIDTH],
         for (int j = 0; j < WIDTH; j++) {
             // Set output to 0 if the 3x3 receptive field is out of bound.
             if ((i < 1) | (i > HEIGHT - 2) | (j < 1) | (j > WIDTH - 2)) {
-                output[i][j] = 0;
+                out[i][j] = 0;
                 continue;
             }
 
@@ -26,7 +26,7 @@ void sobel_filter(unsigned char input[HEIGHT][WIDTH],
             int gx_sum = 0, gy_sum = 0;
             for (int m = -1; m <= 1; m++) {
                 for (int n = -1; n <= 1; n++) {
-                    int pixel = input[i + m][j + n];
+                    int pixel = in[i + m][j + n];
                     gx_sum += pixel * gx[m + 1][n + 1];
                     gy_sum += pixel * gy[m + 1][n + 1];
                 }
@@ -38,7 +38,7 @@ void sobel_filter(unsigned char input[HEIGHT][WIDTH],
             int sum = gx_sum + gy_sum;
             sum = (sum > 255) ? 255 : sum;
 
-            output[i][j] = (unsigned char)sum;
+            out[i][j] = (unsigned char)sum;
         }
     }
 }
