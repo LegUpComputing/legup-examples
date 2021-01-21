@@ -83,30 +83,22 @@ int main() {
         sobel_filter(input_fifo, output_fifo);
     }
 
-    // Output validation.
-    unsigned int matching = 0;
+    // Verify output by comparing against a golden output.
+    int mismatch_count = 0;
     for (int i = 0; i < HEIGHT; i++) {
         for (int j = 0; j < WIDTH; j++) {
-            unsigned char golden = golden_output[i][j];
             unsigned char hw = output_fifo.read();
-
-            if (golden != hw) {
-                printf("ERROR: ");
-            } else {
-                printf("MATCH: ");
-                matching++;
-            }
-            printf("i = %d j = %d sw = %d hw = %d\n", i, j, golden, hw);
+            unsigned char golden = elaine_512_golden_output[i][j];
+            if (hw != golden)
+                mismatch_count++;
         }
     }
 
-    printf("Result: %d\n", matching);
-    if (matching == WIDTH * HEIGHT) {
-        printf("RESULT: PASS\n");
-    } else {
-        printf("RESULT: FAIL\n");
-    }
+    if (mismatch_count == 0)
+        printf("PASS!\n");
+    else
+        printf("FAIL with %d differences\n", mismatch_count);
 
-    return (matching != HEIGHT * WIDTH);
+    return mismatch_count;
 }
 
