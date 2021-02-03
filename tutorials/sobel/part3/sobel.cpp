@@ -58,10 +58,18 @@ void sobel_filter(FIFO<unsigned char> &input_fifo,
 
     // Keep track of row/column of image.
     if (j < WIDTH - 1) {
+        // Case 1: Moving to next pixel from left to right across image row.
         j++;
-    } else { // End of image row.
+    } else if (i == HEIGHT - 1 && j == WIDTH - 1) {
+        // Case 2: End of the image frame, reset to the first pixel coordinates
+        // for the next image frame.
+        i = 0;
         j = 0;
-        i = (i == HEIGHT - 1) ? 0 : i + 1;
+    } else {
+        // Case 3: End of image row. Move to the first pixel of one row down in
+        // the image frame.
+        i++;
+        j = 0;
     }
 }
 

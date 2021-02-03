@@ -18,7 +18,9 @@ void sobel_filter(unsigned char in[HEIGHT][WIDTH],
     int y = 1;
 #pragma LEGUP loop pipeline
     for (int i = 0; i < (HEIGHT - 2) * (WIDTH - 2); i++) {
-        y = (x == HEIGHT - 2) ? y + 1 : y;
+        // increment row when column reaches end of row
+        y = (x == WIDTH - 2) ? y + 1 : y;
+        // increment column until end of row
         x = (x == WIDTH - 2) ? 1 : x + 1;
 
         // Apply the sobel filter at the current "receptive field".
